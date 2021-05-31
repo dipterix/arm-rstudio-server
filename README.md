@@ -77,9 +77,12 @@ rm -rf ./$RVER
 
 ## Install RStudio Server
 
-Credits: https://github.com/jrowen/ARM-rstudio-server
+Credits: 
 
-`@jrowen`'s version requires massive changes for the new RStudio server, I will mark them out in the following guide.
+* https://github.com/jrowen/ARM-rstudio-server
+* https://raw.githubusercontent.com/rstudio/rstudio/main/docker/jenkins/Dockerfile.debian9-x86_64
+
+Please read the above two links. There are couple of changes. 
 
 1. Install prerequisites:
 
