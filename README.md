@@ -119,6 +119,148 @@ sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-7 100
 sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-7 100
 ```
 
+3. Download and extract RStudio 
+
+Choose desired RStudio version by editing `VERS` variable. Download rstudio server as follows:
+
+```
+VERS=v1.4.1106
+
+mkdir /tmp
+cd /tmp
+wget -O $VERS https://github.com/rstudio/rstudio/tarball/$VERS
+mkdir /tmp/rstudio
+tar xvf /tmp/$VERS -C /tmp/rstudio --strip-components 1
+rm /tmp/$VERS
+```
+
+4. Install dependencies (a.k.a the long step part 1)
+
+```
+cd /tmp/rstudio/dependencies/common
+./install-dictionaries
+./install-mathjax
+./install-pandoc
+./install-sentry-cli
+
+# needs npm!
+./install-npm-dependencies
+
+# This can run without boost library
+./install-packages &
+
+# Will take long to run
+./install-boost
+./install-soci
+```
+
+* In `./install-soci`, you need to make sure `sqlite3` is linked correctly (read the terminal messages!). If compile failed, fix the issue by adding required libraries, then go to `/opt/rstudio-tools/` and `sudo rm -rf /opt/rstudio-tools/soci`, followed by re-runing `./install-soci`.
+* `./install-packages` will install some R packages. It can go in parallel. 
+* `./install-boost` will take long to run. Go and get a coffee. However, `soci` might require `boost` library, so no parallel installation can be done here.
+
+5. Build RStudio server (a.k.a the long step part 2)
+
+Once dependencies are installed, run
+
+```
+cd /tmp/rstudio
+mkdir build
+sudo cmake -DRSTUDIO_TARGET=Server -DCMAKE_BUILD_TYPE=Release
+```
+
+Go work out in the gym!
+
+6. Install and register RStudio server as a service
+
+Install:
+
+```
+cd /tmp/rstudio
+sudo make install
+```
+
+Add rstudio-server as an user and register the service
+
+```
+sudo useradd -r rstudio-server
+sudo cp /usr/local/lib/rstudio-server/extras/init.d/debian/rstudio-server /etc/init.d/rstudio-server
+sudo chmod +x /etc/init.d/rstudio-server 
+sudo ln -f -s /usr/local/lib/rstudio-server/bin/rstudio-server /usr/sbin/rstudio-server
+
+# Setup locale
+sudo apt-get install -y locales
+sudo DEBIAN_FRONTEND=noninteractive dpkg-reconfigure locales
+export LANG=en_US.UTF-8
+export LANGUAGE=en_US.UTF-8
+
+# Start the service for the first time
+sudo /etc/init.d/rstudio-server start
+
+# Enable at start-up
+sudo systemctl enable rstudio-server
+```
+
+7. Clean-ups
+
+```
+sudo rm -rf /tmp/rstudio/
+sudo rm -rf /opt/rstudio-tools/depot_tools/
+sudo rm -rf /opt/rstudio-tools/soci/
+sudo rm -rf /opt/rstudio-tools/boost/
+sudo apt-get autoremove
+```
+
+7. Configure rstudio-server
+
+Credit: https://support.rstudio.com/hc/en-us/articles/200552316-Configuring-the-Server
+
+First, stop the service and add two files:
+
+```
+sudo rstudio-server stop
+sudo mkdir /etc/rstudio/
+sudo touch /etc/rstudio/rserver.conf
+sudo touch /etc/rstudio/rsession.conf
+```
+
+Next, edit the following configurations accordingly. Check [here](https://support.rstudio.com/hc/en-us/articles/200552316-Configuring-the-Server) for details.
+
+```
+# Listen to port 8787
+echo "www-port=8787" | sudo tee -a /etc/rstudio/rserver.conf
+echo "www-address=0.0.0.0" | sudo tee -a /etc/rstudio/rserver.conf
+echo "rsession-which-r=$(which R)" | sudo tee -a /etc/rstudio/rserver.conf
+
+# No session time out
+echo "session-timeout-minutes=0" | sudo tee -a /etc/rstudio/rsession.conf
+```
+
+Finally, update and restart the service
+
+```
+sudo rstudio-server verify-installation
+sudo rstudio-server start
+```
+
+
+How, go to http://127.0.0.1:8787 you should be able to see the login screen.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
