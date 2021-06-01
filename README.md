@@ -88,7 +88,8 @@ Please read the above two links. There are couple of changes.
 1. Install prerequisites:
 
 ```
-sudo apt install git pandoc libcurl4-openssl-dev ant debsigs npm \
+sudo apt install git pandoc lsof npm python libuser1-dev ant debsigs \
+  valgrind libglib2.0-dev libcurl4-openssl-dev \
   dpkg-sig expect fakeroot gcc gnupg1 libacl1-dev libattr1-dev \
   clang bzip2 cmake libboost-all-dev libxml-commons-external-java \
   lsof make mesa-common-dev patchelf python rrdtool uuid-dev \
@@ -105,6 +106,7 @@ sudo apt install git pandoc libcurl4-openssl-dev ant debsigs npm \
 * `openjdk` version might be different on your machine
 * The changes are: `clang-4 --> clang`, `libsqlite0-dev --> libsqlite3-dev`, added `npm`
 * I haven't tried yet, but `pandoc` might not be needed
+* If some libraries are not available, might just remove them or to find alternatives.
 
 2. Check clang version
 
@@ -141,6 +143,11 @@ rm /tmp/$VERS
 4. Install dependencies (a.k.a the long step part 1)
 
 ```
+cd /tmp/rstudio/
+sudo mkdir -p /opt/rstudio-tools/panmirror
+sudo cp src/gwt/panmirror/src/editor/yarn.lock /opt/rstudio-tools/panmirror/
+sudo cp src/gwt/panmirror/src/editor/package.json /opt/rstudio-tools/panmirror/
+
 cd /tmp/rstudio/dependencies/common
 ./install-dictionaries
 ./install-mathjax
