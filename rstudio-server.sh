@@ -21,6 +21,11 @@ sudo apt iinstall git pandoc libcurl4-openssl-dev ant debsigs npm \
 sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-7 100
 sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-7 100
 
+cd /tmp/rstudio/
+sudo mkdir -p /opt/rstudio-tools/panmirror
+sudo cp src/gwt/panmirror/src/editor/yarn.lock /opt/rstudio-tools/panmirror/
+sudo cp src/gwt/panmirror/src/editor/package.json /opt/rstudio-tools/panmirror/
+
 cd /tmp/rstudio/dependencies/common
 ./install-dictionaries
 ./install-mathjax
