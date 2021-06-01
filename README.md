@@ -27,11 +27,12 @@ For future versions of R or RStudio, this tutorial might work as well. However, 
 1. Open terminal, enter:
 
 ```
-sudo apt install git wget curl sudo make libbz2-dev build-essential libpcre2-dev \
-  cmake fort77 gfortran gcc gobjc++ openjdk-11-jdk openjdk-11-jre-headless \
+sudo apt-get install libbz2-dev build-essential libpcre2-dev \
+  fort77 gfortran gcc gobjc++ openjdk-11-jdk openjdk-11-jre-headless \
   libssl-dev libssh2-1-dev libv8-dev libxml2-dev libfftw3-dev \
   libtiff5-dev libhdf5-dev libcurl4-openssl-dev xorg-dev \
-  libtiff-dev libcairo2-dev texlive texlive-fonts-extra texinfo
+  libtiff-dev libcairo2-dev texlive texlive-fonts-extra texinfo \
+  libblas-dev liblapack-dev liblzma-dev libreadline-dev
 ```
 
 > Please make sure before answering `Y` to install these packages, no previous packages are removed (`0 to remove`)! If any packages are removed, google the potential issues of replacing such packages
