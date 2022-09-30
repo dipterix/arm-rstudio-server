@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-RVER="R-4.1.0"
+RVER="R-4.2.1"
 
 # In other linux, you might need X11 support, but in raspberry, this is not required
 sudo apt-get install libbz2-dev build-essential libpcre2-dev \
