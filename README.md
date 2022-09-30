@@ -194,7 +194,7 @@ Add rstudio-server as an user and register the service
 
 ```
 sudo useradd -r rstudio-server
-sudo cp /usr/local/lib/rstudio-server/extras/init.d/debian/rstudio-server /etc/init.d/rstudio-server
+sudo cp /usr/local/extras/init.d/debian/rstudio-server /etc/init.d/rstudio-server
 sudo chmod +x /etc/init.d/rstudio-server 
 sudo ln -f -s /usr/local/lib/rstudio-server/bin/rstudio-server /usr/sbin/rstudio-server
 
