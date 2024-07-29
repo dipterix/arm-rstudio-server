@@ -2,17 +2,15 @@
 
 ### Download RStudio-Server
 
-Go to posit.co, download the RStudio-Server source code to the `Downloads` folder
-
-As of July 29, 2024, this is the newest link: https://github.com/rstudio/rstudio/tarball/v2024.04.2+764
+Go to Github, git-clone the RStudio-Server source code to the `Downloads` folder. Do not use the released version (the compiling process requires `.git` folder to exists for some reason.
 
 Open terminal, run
 
 ```sh
 cd ~/Downloads
-tar -xvf rstudio-rstudio-v2024.04.2-764-0-ge4392fc.tar.gz
-cd rstudio-rstudio-e4392fc/
-RSTUDIO_SRCDIR=~/Downloads/rstudio-rstudio-e4392fc/
+git clone https://github.com/rstudio/rstudio.git
+cd rstudio
+RSTUDIO_SRCDIR=~/Downloads/rstudio/
 ```
 
 In the following text, I'll use `${RSTUDIO_SRCDIR}` to reference the RStudio source directory.
@@ -34,7 +32,7 @@ find-program BREW_X86 brew       \
 The reason to remove them is because old RStudio depends on `qt`, which compiles on `x86` intel chips, but new RStudio is built with Electron. 
 However, the devs haven't removed this dependency.
 
-#### 2. Fix `soci`
+#### 2. Fix `soci` makefile
 
 As of writing this memo, `soci` (one of the dependencies) does not compile correctly. The reason is because `cmake` has deprecated certain old flags. 
 Temporary fix is to open `${RSTUDIO_SRCDIR}/dependencies/common/install-soci` with your editor, go to near line 87, append the following line `CMAKE_GENERATOR="Unix Makefiles"`. 
@@ -62,9 +60,9 @@ CMAKE_GENERATOR="Unix Makefiles"
 
 The goal is to force cmake to use "Unix Makefiles" and also set `CMAKE_MACOSX_RPATH` to `ON`.
 
-#### 3. Make sure `$PATH` is set correctly
+#### 3. Make sure `$PATH` is clean
 
-Start a clean terminal and run
+Close your corrent terminal, start a clean new terminal and run
 
 ```sh
 echo $PATH
@@ -72,11 +70,14 @@ echo $PATH
 
 Make sure the `PATH` environment is as clean as possible. For example, remove any path that contains conda, node.js, and homebrew. They will cause packages such `xml2` to fail.
 
-For example, my PATH is set as 
+If you are inside of python virtual environment or conda environment, quit that environment first! Thanks for miniconda, I learnt a hard-lesson by letting it screw up everything in my first attempt. 
+
+My `PATH` is set as 
 
 ```sh
 PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin
 ```
+
 
 #### 4. Run `install-dependencies-osx`
 
