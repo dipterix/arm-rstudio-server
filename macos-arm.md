@@ -115,7 +115,7 @@ Follow the "INSTALL" file (included in the source tar ball), you can run
 cd "${RSTUDIO_SRCDIR}"
 mkdir build
 cd build
-cmake .. -DRSTUDIO_TARGET=Server -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/Applications/RStudioServer
+/opt/homebrew/bin/cmake .. -DRSTUDIO_TARGET=Server -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/Applications/RStudioServer
 ```
 
 Alternatively, you can download `cmake` GUI and configure from there
