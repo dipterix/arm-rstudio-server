@@ -87,6 +87,26 @@ cd "${RSTUDIO_SRCDIR}/dependencies/osx"
 
 This process usually takes 30 min to finish.
 
+#### 5. Fix `node` folder name
+
+Go to `${RSTUDIO_SRCDIR}/dependencies/common/node`, duplicate all the folders within, and remove `-arm` from the folder names. This is because the make process requires the node folders to be something like `20.15.1` rather than `20.15.1-arm64`. 
+
+Here's the folder before:
+
+```
+20.15.1-arm64
+20.15.1-arm64-patched
+```
+
+Here's after:
+
+```
+20.15.1
+20.15.1-arm64
+20.15.1-arm64-patched
+20.15.1-patched
+```
+
 ### Compile & install
 
 Follow the "INSTALL" file (included in the source tar ball), you can run
@@ -108,6 +128,4 @@ sudo make install
 
 to install.
 
-This will install RStudio server to `/Applications/RStudioServer`. Notice this process will fail once because the process will need to install `node` under
-`${RSTUDIO_SRCDIR}/dependencies/common/node`. The process was hard-coded to `${RSTUDIO_SRCDIR}/dependencies/common/node/18.20.3/`. However, on M1 Mac, the installed
-directory will be `18.20.3-arm`. Simply rename the folder to `18.20.3` and re-run `sudo make install` will finish the rest of the installations.
+This will install RStudio server to `/Applications/RStudioServer`. 
