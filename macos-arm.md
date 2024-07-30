@@ -1,6 +1,6 @@
 ## Compile RStudio-Server on MacOS ARM CPU
 
-* Status: Still trying... (Please do not use this guide for now as it's not working)
+* Status: Still trying... (Might not work in all cases but I managed to make it work on my personal laptop)
 
 Useful resources: https://github.com/rstudio/rstudio/wiki/M1-Mac-Dev-Machine-Setup
 
@@ -73,4 +73,61 @@ sudo make install
   - Copy the folder `/opt/rstudio-server/RStudio.app/Contents/MacOS` out and paste under `/opt/rstudio-server` directly, rename the `MacOS` to `bin`
   - Open `/opt/rstudio-server/RStudio.app/Contents/Resources` and copy the sub-items out (this time do not copy the whole folder, copy the sub-folders) and paste under `/opt/rstudio-server` 
 
-* 
+### Post-configure server
+
+* Register the service to sudo
+
+```sh
+sudo launchctl load /opt/rstudio-server/extras/launchd/com.rstudio.launchd.rserver.plist
+sudo launchctl start rstudio-server
+```
+
+* Start RStudio server
+
+```sh
+sudo /opt/rstudio-server/bin/rstudio-server start
+```
+
+Now go to http://127.0.0.1:8787/ and you should be able to see the login page.
+
+However, you can't login with any key. This is because you haven't configured the server yet.
+
+* Edit `rserver.conf`
+
+Create a file named `rserver.conf` under your desktop, copy-paste the following configurations into the file
+
+```
+# set the data dir to be a user friendly place
+server-data-dir=/tmp/rstudio-server
+
+# always authenticate users (defaults to no-auth if not running as root)
+auth-none=0
+
+# lower the min user ID--the default is 1000, which is suitable for Linux, but
+# on OS X UIDs start at 500 and there's no /etc/login.defs
+auth-minimum-user-id=500
+
+# by default signouts happen after 30 minutes of inactivity; setting this to 0
+# causes the auth-stay-signed-in-days default to be used instead
+# auth-timeout-minutes=0
+
+# If you want to limit the access to certain groups, uncomment this
+# auth-required-user-group=rstudio_users
+```
+
+Close this file, copy-paste it at `/etc/rstudio/rserver.conf`
+
+
+* Restart rstudio server to update configuration
+
+```sh
+sudo /opt/rstudio-server/bin/rstudio-server restart
+```
+
+
+
+
+
+
+
+
