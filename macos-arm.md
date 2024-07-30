@@ -8,19 +8,19 @@ Useful resources: https://github.com/rstudio/rstudio/wiki/M1-Mac-Dev-Machine-Set
 
 * Create an Admin user `rstudio-server` in your system settings, login with this account (please don't install anything as we want to make sure `$PATH` is clean).
 
-* Install Rosetta2 so Intel binaries will work. You will be prompted to do this when necessary, but I like to get it out of the way up front. From the terminal: /usr/sbin/softwareupdate --install-rosetta --agree-to-license
+* Install Rosetta2 so Intel binaries will work. You will be prompted to do this when necessary, but I like to get it out of the way up front. From the terminal: `/usr/sbin/softwareupdate --install-rosetta --agree-to-license`
   - You might see a "Package Authoring Error" message when running this command. You can ignore this.
 
 
 * Instal Homwbrew using command shown at https://brew.sh; when it completes
   - Make sure you run `echo 'eval $(/opt/homebrew/bin/brew shellenv)' >> $HOME/.zprofile` after installation
-  - Run the install command again, prefixed with arch -x86_64 to force it to install the Intel flavor
-  - At this point confirm (in terminal) that which brew points to /opt/homebrew/bin/brew; this is the native M1 brew and is what you normally want to use
-  - If /usr/local/bin is first on the path you will need to adjust your path to put /opt/homebrew/bin first
+  - Run the install command again, prefixed with `arch -x86_64` to force it to install the Intel flavor (do NOT add this version to your `PATH`)
+  - At this point confirm (in terminal) that which brew points to `/opt/homebrew/bin/brew`; this is the native M1 brew and is what you normally want to use
+  - If `/usr/local/bin` is first on the path you will need to adjust your path to put `/opt/homebrew/bin` first
 
 ### Download RStudio-Server
 
-Go to Github, git-clone the RStudio-Server source code to the `Downloads` folder. Do not use the released version (the compiling process requires `.git` folder to exists for some reason.
+Go to Github, git-clone the RStudio-Server source code to the home folder. Do not use the released version (the compiling process requires `.git` folder to exists for some reason.
 
 Open terminal, run
 
@@ -40,7 +40,7 @@ In the following text, I'll use `${RSTUDIO_SRCDIR}` to reference the RStudio sou
 Run the following commands:
 
 ```sh
-cd ~/rstudio/dependencies/osx
+cd ${RSTUDIO_SRCDIR}/dependencies/osx
 ./install-dependencies-osx
 ```
 
