@@ -1,5 +1,7 @@
 ## Compile RStudio-Server on MacOS ARM CPU
 
+* Status: Still trying... (Please do not use this guide for now as it's not working)
+
 ### Download RStudio-Server
 
 Go to Github, git-clone the RStudio-Server source code to the `Downloads` folder. Do not use the released version (the compiling process requires `.git` folder to exists for some reason.
@@ -121,7 +123,13 @@ cd build
 
 Alternatively, you can download `cmake` GUI and configure from there
 
-Once `cmake` finishes without error, run
+Once `cmake` finishes without error, add node in the `dependencies` folder to `PATH` because compiling `GWT` library needs `node`.
+
+```sh
+PATH=$PATH:${RSTUDIO_SRCDIR}/dependencies/common/node/20.15.1/bin
+```
+
+Please change the version number accordingly.
 
 ```sh
 sudo make install
